@@ -3,7 +3,7 @@
 #include <RadioLib.h>
 
 // Heltec V4 SX1262
-SX1262 radio = new Module(8, 14, 12, 13);
+SX1262 radio = new Module(8, 14, 12, 13); // sets GPIO pins of radio, these are default
 int cnt = 0;
 
 void setup() {
@@ -12,7 +12,14 @@ void setup() {
 
   Serial.println("Initializing LoRa...");
 
-  int state = radio.begin(915.0);   // US frequency
+  int state = radio.begin(750.0);   // US frequency
+  
+  // these apparentally help transmit further
+  radio.setSpreadingFactor(12);
+  radio.setBandwidth(125.0);
+  radio.setCodingRate(8);
+  radio.setOutputPower(22);
+  radio.setPreambleLength(16);
 
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println("LoRa init success!");
@@ -38,5 +45,5 @@ void loop() {
     Serial.println(state);
   }
 
-  delay(3000);
+  delay(1000);
 }

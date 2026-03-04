@@ -19,6 +19,8 @@ fullclean:
 test: clean
 	pio test -vvv
 
+remake: clean all
+
 rebuild: clean build
 
 all: build upload monitor

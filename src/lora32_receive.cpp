@@ -1,4 +1,4 @@
-/*
+
 #include <Arduino.h>
 #include <RadioLib.h>
 
@@ -10,7 +10,11 @@ void setup() {
 
   Serial.println("Initializing LoRa...");
 
-  int state = radio.begin(915.0);
+  int state = radio.begin(750.0);
+  radio.setSpreadingFactor(12);
+  radio.setBandwidth(125.0);
+  radio.setCodingRate(8);
+  radio.setPreambleLength(16);
 
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println("LoRa init success!");
@@ -30,4 +34,3 @@ void loop() {
     Serial.println(str);
   }
 }
-  */
