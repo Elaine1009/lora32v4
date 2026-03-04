@@ -1,5 +1,7 @@
+
 #include <Arduino.h>
 #include <RadioLib.h>
+#include <WiFi.h>
 
 SX1262 radio = new Module(8, 14, 12, 13);
 
@@ -14,6 +16,8 @@ void setup() {
     Serial.println(state);
     while (true);
   }
+
+  WiFi.mode(WIFI_OFF);
 
   // *** FIX: enable RF switch via DIO2 (required on Heltec V4) ***
   radio.setDio2AsRfSwitch();
