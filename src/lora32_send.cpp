@@ -32,6 +32,7 @@ void loop() {
   cnt++;
 
   // *** FIX: enable GC1109 front-end PA before transmitting ***
+  // (I asked claude code for this and I have no clue what this means)
   pinMode(46, OUTPUT);
   digitalWrite(46, HIGH);
 
