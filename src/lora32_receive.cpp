@@ -10,7 +10,7 @@ void setup() {
   delay(2000);
   Serial.println("Initializing LoRa...");
   WiFi.mode(WIFI_OFF);
-  btstop();
+  btStop();
 
   int state = radio.begin(
     915.0,  // frequency
