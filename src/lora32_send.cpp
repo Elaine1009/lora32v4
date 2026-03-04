@@ -40,7 +40,7 @@ void setup() {
   // radio.setOutputPower(22); // how loud broadcast is
   // radio.setPreambleLength(16); // gives receiver more time to lock onto transmission signal
 
-  pinMode(2, OUTPUT);
+  pinMode(2, OUTPUT); // enables FEM_EN
   digitalWrite(2, HIGH);
 
   Serial.println("LoRa init success!");

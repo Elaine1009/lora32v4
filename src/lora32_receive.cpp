@@ -42,7 +42,7 @@ void setup() {
   // radio.setCodingRate(8);
   // radio.setPreambleLength(16);
 
-  pinMode(2, OUTPUT);
+  pinMode(2, OUTPUT); // enables FEM_EN
   digitalWrite(2, HIGH);
 
   Serial.println("LoRa init success!");
