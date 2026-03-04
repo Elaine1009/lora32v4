@@ -12,7 +12,7 @@ void setup() {
 
   Serial.println("Initializing LoRa...");
 
-  int state = radio.begin(750.0);   // US frequency
+  int state = radio.begin(915.0);   // US frequency
   
   // these apparentally help transmit further
   radio.setSpreadingFactor(12);

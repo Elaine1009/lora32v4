@@ -10,7 +10,7 @@ void setup() {
 
   Serial.println("Initializing LoRa...");
 
-  int state = radio.begin(750.0);
+  int state = radio.begin(915.0);
   radio.setSpreadingFactor(12);
   radio.setBandwidth(125.0);
   radio.setCodingRate(8);
