@@ -11,24 +11,35 @@ void setup() {
   Serial.begin(115200);
   delay(2000);
   Serial.println("Initializing LoRa...");
+  btStop();
 
-  int state = radio.begin(915.0); // 915 MHz
+  // int state = radio.begin(915.0); // 915 MHz
+  int state = radio.begin(
+    915.0,  // frequency
+    125.0,  // bandwidth
+    12,     // spreading factor
+    8,      // coding rate
+    0x12,   // sync word (IDK WHAT THIS IS)
+    22,     // TX power
+    16,     // preamble length
+    1.6     // TCXO voltage ← fixes the clock source
+  );
   if (state != RADIOLIB_ERR_NONE) {
     Serial.print("LoRa init failed, code ");
     Serial.println(state);
     while (true); // stops program if fail
   }
 
-  WiFi.mode(WIFI_OFF);
+  // WiFi.mode(WIFI_OFF);
   // btstop();
 
   radio.setDio2AsRfSwitch(); // this line is important!
 
-  radio.setSpreadingFactor(12); // sweeps frequencies for each bit- SF12=4096 chirp/bit, SF6=64chirps/bit
-  radio.setBandwidth(125.0); // 7.8kHz to 500kHz
-  radio.setCodingRate(8); // for every 4 bits, send CR. min 5 max 8
-  radio.setOutputPower(22); // how loud broadcast is
-  radio.setPreambleLength(16); // gives receiver more time to lock onto transmission signal
+  // radio.setSpreadingFactor(12); // sweeps frequencies for each bit- SF12=4096 chirp/bit, SF6=64chirps/bit
+  // radio.setBandwidth(125.0); // 7.8kHz to 500kHz
+  // radio.setCodingRate(8); // for every 4 bits, send CR. min 5 max 8
+  // radio.setOutputPower(22); // how loud broadcast is
+  // radio.setPreambleLength(16); // gives receiver more time to lock onto transmission signal
 
   Serial.println("LoRa init success!");
 }

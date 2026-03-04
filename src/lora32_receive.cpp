@@ -10,7 +10,16 @@ void setup() {
   delay(2000);
   Serial.println("Initializing LoRa...");
 
-  int state = radio.begin(915.0);
+  int state = radio.begin(
+    915.0,  // frequency
+    125.0,  // bandwidth
+    12,     // spreading factor
+    8,      // coding rate
+    0x12,   // sync word
+    22,     // TX power
+    16,     // preamble length
+    1.6     // TCXO voltage
+  );
   if (state != RADIOLIB_ERR_NONE) {
     Serial.print("LoRa init failed, code ");
     Serial.println(state);
@@ -27,10 +36,10 @@ void setup() {
   digitalWrite(46, LOW);
 
   // must be applied AFTER begin()
-  radio.setSpreadingFactor(12);
-  radio.setBandwidth(125.0);
-  radio.setCodingRate(8);
-  radio.setPreambleLength(16);
+  // radio.setSpreadingFactor(12);
+  // radio.setBandwidth(125.0);
+  // radio.setCodingRate(8);
+  // radio.setPreambleLength(16);
 
   Serial.println("LoRa init success!");
 }
