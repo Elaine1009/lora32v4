@@ -11,6 +11,7 @@ void setup() {
   Serial.begin(115200);
   delay(2000);
   Serial.println("Initializing LoRa...");
+  WiFi.mode(WIFI_OFF);
   btStop();
 
   // int state = radio.begin(915.0); // 915 MHz
@@ -22,7 +23,7 @@ void setup() {
     0x12,   // sync word (IDK WHAT THIS IS)
     22,     // TX power
     16,     // preamble length
-    1.6     // TCXO voltage ← fixes the clock source
+    1.6     // TCXO voltage
   );
   if (state != RADIOLIB_ERR_NONE) {
     Serial.print("LoRa init failed, code ");
@@ -30,8 +31,6 @@ void setup() {
     while (true); // stops program if fail
   }
 
-  // WiFi.mode(WIFI_OFF);
-  // btstop();
 
   radio.setDio2AsRfSwitch(); // this line is important!
 
@@ -41,16 +40,18 @@ void setup() {
   // radio.setOutputPower(22); // how loud broadcast is
   // radio.setPreambleLength(16); // gives receiver more time to lock onto transmission signal
 
+  pinMode(2, OUTPUT);
+  digitalWrite(2, HIGH);
+
   Serial.println("LoRa init success!");
 }
 
 void loop() {
   cnt++;
 
-  // *** FIX: enable GC1109 front-end PA before transmitting ***
   // (I asked claude code for this and I have no clue what this means)
-  pinMode(46, OUTPUT); // enables GPIO46 as a power amplifier (FEM_PA)
-  digitalWrite(46, HIGH); // turns the PA ON
+  // pinMode(46, OUTPUT); // enables GPIO46 as a power amplifier (FEM_PA)
+  // digitalWrite(46, HIGH); // turns the PA ON
 
   char buffer[50];
   sprintf(buffer, "packet #%d", cnt); // prints packet#
@@ -58,8 +59,8 @@ void loop() {
   Serial.printf("Sending: %s\n", buffer);
   int state = radio.transmit(buffer);
 
-  digitalWrite(46, LOW); // turns PA off
-  pinMode(46, INPUT); // changes PA to floating
+  // digitalWrite(46, LOW); // turns PA off
+  // pinMode(46, INPUT); // changes PA to floating
 
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println("Packet sent!");

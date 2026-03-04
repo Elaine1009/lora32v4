@@ -9,6 +9,8 @@ void setup() {
   Serial.begin(115200);
   delay(2000);
   Serial.println("Initializing LoRa...");
+  WiFi.mode(WIFI_OFF);
+  btstop();
 
   int state = radio.begin(
     915.0,  // frequency
@@ -26,20 +28,22 @@ void setup() {
     while (true);
   }
 
-  WiFi.mode(WIFI_OFF);
 
   // *** FIX: enable RF switch via DIO2 (required on Heltec V4) ***
   radio.setDio2AsRfSwitch();
 
   // *** FIX: GPIO46 LOW for receive (PA disabled, LNA path active) ***
-  pinMode(46, OUTPUT);
-  digitalWrite(46, LOW);
+  // pinMode(46, OUTPUT);
+  // digitalWrite(46, LOW);
 
   // must be applied AFTER begin()
   // radio.setSpreadingFactor(12);
   // radio.setBandwidth(125.0);
   // radio.setCodingRate(8);
   // radio.setPreambleLength(16);
+
+  pinMode(2, OUTPUT);
+  digitalWrite(2, HIGH);
 
   Serial.println("LoRa init success!");
 }
