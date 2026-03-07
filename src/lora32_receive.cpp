@@ -1,7 +1,6 @@
-
 #include <Arduino.h>
 #include <RadioLib.h>
-#include <WiFi.h>
+// #include <WiFi.h>
 
 SX1262 radio = new Module(8, 14, 12, 13);
 
@@ -9,8 +8,8 @@ void setup() {
   Serial.begin(115200);
   delay(2000);
   Serial.println("Initializing LoRa...");
-  WiFi.mode(WIFI_OFF);
-  btStop();
+  // WiFi.mode(WIFI_OFF);
+  // btStop();
 
   int state = radio.begin(
     915.0,  // frequency

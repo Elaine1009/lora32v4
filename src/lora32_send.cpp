@@ -1,7 +1,6 @@
-
 #include <Arduino.h>
 #include <RadioLib.h>
-#include <WiFi.h>
+// #include <WiFi.h>
 // #include <esp_bt.h>
 
 // Heltec V4 SX1262
@@ -12,8 +11,8 @@ void setup() {
   Serial.begin(115200);
   delay(2000);
   Serial.println("Initializing LoRa...");
-  WiFi.mode(WIFI_OFF);
-  btStop();
+  // WiFi.mode(WIFI_OFF);
+  // btStop();
 
   // int state = radio.begin(915.0); // 915 MHz
   int state = radio.begin(
