@@ -14,8 +14,9 @@ int cycle = 0;
 void setup() {
 	Serial.begin(115200);
 	delay(2000);
+	uint64_t mac = ESP.getEfuseMac();
 	// bottom 4 bytes of MAC address of chip
-	DEVICE_ID = (uint32_t)(ESP.getEfuseMac() & 0xFFFFFFFF);
+	DEVICE_ID = (uint32_t)(mac & 0xFFFFFFFF) ^ (uint32_t)(mac >> 32);
 	Serial.printf("Device ID: %08X\n", DEVICE_ID);
 	Serial.println("Initializing LoRa...");
 
