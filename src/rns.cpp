@@ -13,7 +13,8 @@ int cycle = 0; // every "5" seconds
 void setup() {
   Serial.begin(115200);
   delay(2000);
-  DEVICE_ID = (uint32_t)(ESP.getEfuseMac() & 0xFFFFFFFF);
+  uint64_t mac = ESP.getEfuseMac();
+  DEVICE_ID = (uint32_t)(mac & 0xFFFFFFFF) ^ (uint32_t)(mac >> 32);
 	Serial.printf("Device ID: %08X\n", DEVICE_ID);
   Serial.println("Initializing LoRa...");
 
