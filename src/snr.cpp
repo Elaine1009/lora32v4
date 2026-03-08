@@ -55,7 +55,7 @@ void loop() {
 		String str;
 		String payload;
 		String inID = "";
-		int state = radio.readData(str);
+		int rstate = radio.readData(str);
 		int delimindex = str.indexOf(DELIM);
 
 		Serial.print("Raw: '");
