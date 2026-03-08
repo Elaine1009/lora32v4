@@ -59,10 +59,10 @@ void loop() {
 		int rstate = radio.readData(str);
 		int delimindex = str.indexOf(DELIM);
 
-		Serial.print("Raw: '");
-		Serial.print(str);
-		Serial.print("' delim: ");
-		Serial.println(delimindex);
+		// Serial.print("Raw: '");
+		// Serial.print(str);
+		// Serial.print("' delim: ");
+		// Serial.println(delimindex);
 
 		if (str.length() == 0) { // if zero length string, then ignore it
 			radio.startReceive();
@@ -71,7 +71,7 @@ void loop() {
 		if (delimindex == 8) {
 			uint32_t senderID = strtoul(str.substring(0, 8).c_str(), NULL, 16); // takes first 8 characters of str and turns it into hex
 			if (senderID == DEVICE_ID) { // i guess we should never hit this?
-				Serial.println("Own packet received."); // delete, testing line
+				// Serial.println("Own packet received."); // delete, testing line
 				radio.startReceive(); // start receive before returning
 				return;
 			} else { // this means there is device ID so we separate the ID and the message
@@ -86,7 +86,7 @@ void loop() {
 			Serial.print(payload);
 			Serial.print(", RSSI: ");
 			Serial.print(radio.getRSSI());
-			Serial.println(" dBm, ID: ");
+			Serial.print(" dBm, ID: ");
 			Serial.println(inID);
 		} else if (rstate != RADIOLIB_ERR_RX_TIMEOUT) {
 			Serial.print("Receive failed, code ");
@@ -94,7 +94,7 @@ void loop() {
 		}
 		radio.startReceive(); // rearm receive after receiving a packet
 	}
-	if (millis() - lastSend >= 20000) { // A lot of seconds
+	if (millis() - lastSend >= 10000) { // A lot of seconds
 		lastSend = millis();
 		cycle++;
 		char buffer[50];
