@@ -14,6 +14,8 @@ int cycle = 0; // every "5" seconds
 
 void setup() {
   Serial.begin(115200);
+  pinMode(36, OUTPUT);
+  digitalWrite(36, LOW);
   delay(2000);
   uint64_t mac = ESP.getEfuseMac();
   DEVICE_ID = (uint32_t)(mac & 0xFFFFFFFF) ^ (uint32_t)(mac >> 32);
@@ -29,7 +31,7 @@ void setup() {
     0x12,   // sync word
     22,     // TX power
     16,     // preamble length
-    1.6     // TCXO voltage
+    1.8     // TCXO voltage
   );
   if (state != RADIOLIB_ERR_NONE) {
     Serial.print("LoRa init failed, code ");
@@ -38,9 +40,10 @@ void setup() {
   }
 
   radio.setDio2AsRfSwitch(); // asks for FEM_EN to enable
+  radio.setCurrentLimit(140.0);
 
-	pinMode(2, OUTPUT); // enables FEM_EN
-  digitalWrite(2, HIGH);
+	//pinMode(2, OUTPUT); // enables FEM_EN
+  //digitalWrite(2, HIGH);
 
 	radio.setPacketReceivedAction(onReceive);
 	radio.startReceive();
@@ -97,8 +100,8 @@ void loop()
     sprintf(buffer, "%08X%sReceived and sent back: %s", DEVICE_ID, DELIM, str.c_str());
     Serial.printf("Sending: %s\n", buffer);
   
-    pinMode(46, OUTPUT);
-    digitalWrite(46, HIGH);
+    //pinMode(46, OUTPUT);
+    //digitalWrite(46, HIGH);
 
     int sstate = radio.transmit(buffer);
     
@@ -112,8 +115,8 @@ void loop()
       Serial.println(sstate);
     }
     
-    digitalWrite(46, LOW); // turns PA off
-    pinMode(46, INPUT); // changes PA to floating
+    //digitalWrite(46, LOW); // turns PA off
+    //pinMode(46, INPUT); // changes PA to floating
     
     radio.startReceive();
   }
