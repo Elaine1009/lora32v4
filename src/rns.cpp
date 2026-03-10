@@ -26,9 +26,9 @@ void setup() {
   int state = radio.begin(
     915.0,  // frequency
     125.0,  // bandwidth
-    12,     // spreading factor
+    7,     // spreading factor
     8,      // coding rate
-    0x12,   // sync word
+    0x34,   // sync word
     22,     // TX power
     16,     // preamble length
     1.8     // TCXO voltage
