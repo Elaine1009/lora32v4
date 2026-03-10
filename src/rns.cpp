@@ -1,12 +1,14 @@
 // this program tests both send and receive on heltec lora v4
 #include <Arduino.h>
 #include <RadioLib.h>
+#include <WiFi.h>
 #define DELIM ":"
 volatile bool rxDone = false;
 
 void onReceive();
 
 uint32_t DEVICE_ID;
+
 SX1262 radio = new Module(8, 14, 12, 13);
 int cycle = 0; // every "5" seconds
 
@@ -17,6 +19,7 @@ void setup() {
   DEVICE_ID = (uint32_t)(mac & 0xFFFFFFFF) ^ (uint32_t)(mac >> 32);
 	Serial.printf("Device ID: %08X\n", DEVICE_ID);
   Serial.println("Initializing LoRa...");
+  WiFi.mode(WIFI_OFF);
 
   int state = radio.begin(
     915.0,  // frequency
@@ -83,7 +86,7 @@ void loop()
   if (state == RADIOLIB_ERR_NONE)
   {
     Serial.print("Received: ");
-    Serial.print(str);
+    Serial.print(payload);
     Serial.print(", RSSI: ");
     Serial.print(radio.getRSSI());
     Serial.print(" dBm, ID: ");
@@ -93,12 +96,12 @@ void loop()
     // snprintf(buffer, sizeof(buffer), "Received and sent back: %s", str.c_str());
     sprintf(buffer, "%08X%sReceived and sent back: %s", DEVICE_ID, DELIM, str.c_str());
     Serial.printf("Sending: %s\n", buffer);
+  
+    pinMode(46, OUTPUT);
+    digitalWrite(46, HIGH);
 
-	int sstate = radio.transmit(buffer);
-
-    // digitalWrite(46, LOW); // turns PA off
-    // pinMode(46, INPUT); // changes PA to floating
-
+    int sstate = radio.transmit(buffer);
+    
     if (sstate == RADIOLIB_ERR_NONE)
     {
       Serial.println("Packet sent!");
@@ -108,6 +111,10 @@ void loop()
       Serial.print("Send failed, code ");
       Serial.println(sstate);
     }
+    
+    digitalWrite(46, LOW); // turns PA off
+    pinMode(46, INPUT); // changes PA to floating
+    
     radio.startReceive();
   }
   else if (state != RADIOLIB_ERR_RX_TIMEOUT)

@@ -1,6 +1,7 @@
 // this program tests both send and receive on heltec lora v4
 #include <Arduino.h>
 #include <RadioLib.h>
+#include <WiFi.h>
 #define DELIM ":"
 volatile bool rxDone = false;
 unsigned long lastSend = 0;
@@ -19,6 +20,7 @@ void setup() {
 	DEVICE_ID = (uint32_t)(mac & 0xFFFFFFFF) ^ (uint32_t)(mac >> 32);
 	Serial.printf("Device ID: %08X\n", DEVICE_ID);
 	Serial.println("Initializing LoRa...");
+	WiFi.mode(WIFI_OFF);
 
 	int state = radio.begin(
 		915.0,  // frequency
@@ -95,6 +97,8 @@ void loop() {
 		radio.startReceive(); // rearm receive after receiving a packet
 	}
 	if (millis() - lastSend >= 10000) { // A lot of seconds
+		pinMode(46, OUTPUT);
+  		digitalWrite(46, HIGH);
 		lastSend = millis();
 		cycle++;
 		char buffer[50];
@@ -108,6 +112,9 @@ void loop() {
 			Serial.print("Send failed, code ");
 			Serial.println(sstate);
 		}
+
+		digitalWrite(46, LOW); 	
+  		pinMode(46, INPUT); 
 
 		radio.startReceive(); // start receiving after sending
 	}
