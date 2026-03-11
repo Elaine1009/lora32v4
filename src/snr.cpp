@@ -44,8 +44,8 @@ void setup() {
 	radio.setCurrentLimit(140.0);
 
 
-	//pinMode(2, OUTPUT); // enables FEM_EN
-	//digitalWrite(2, HIGH);
+	pinMode(2, OUTPUT); // enables FEM_EN
+	digitalWrite(2, HIGH);
 
 	radio.setPacketReceivedAction(onReceive);
 	radio.startReceive();
@@ -101,8 +101,8 @@ void loop() {
 		radio.startReceive(); // rearm receive after receiving a packet
 	}
 	if (millis() - lastSend >= 10000) { // A lot of seconds
-		//pinMode(46, OUTPUT);
-  		//digitalWrite(46, HIGH);
+		pinMode(46, OUTPUT);
+  		digitalWrite(46, HIGH);
 		lastSend = millis();
 		cycle++;
 		char buffer[50];
@@ -117,8 +117,8 @@ void loop() {
 			Serial.println(sstate);
 		}
 
-		//digitalWrite(46, LOW); 	
-  		//pinMode(46, INPUT); 
+		digitalWrite(46, LOW); 	
+  		pinMode(46, INPUT); 
 
 		radio.startReceive(); // start receiving after sending
 	}
